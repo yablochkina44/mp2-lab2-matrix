@@ -62,51 +62,128 @@ public:
 template <class ValType>
 TVector<ValType>::TVector(int s, int si)
 {
+    if ( si < 0)
+		throw "wrong Start Index";
+	if ((s >= 0) && ( s <= MAX_VECTOR_SIZE))
+	{
+		Size = s;
+		StartIndex = si;
+		pVector = new ValType[Size];
+		for (int i = 0; i < Size; i++)
+			pVector[i] = 0;
+	}
+	else throw "negative size";
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> //конструктор копирования
 TVector<ValType>::TVector(const TVector<ValType> &v)
 {
+    int i = 0;
+    Size = v.Size;
+    StartIndex = v.StartIndex;
+    pVector = new ValType[Size];
+    for (i; i < Size; i++)
+        pVector[i] = v.pVector[i];
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType>
 TVector<ValType>::~TVector()
 {
+    delete[] pVector;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // доступ
 ValType& TVector<ValType>::operator[](int pos)
 {
+    pos = pos - StartIndex;
+    if (pos >= Size || pos< 0) {
+        throw pos;
+    }
+    else return pVector[pos];
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // сравнение
 bool TVector<ValType>::operator==(const TVector &v) const
 {
+    bool f = 0;
+    if (Size == v.Size && StartIndex == v.StartIndex)
+    {
+        for (int i = 0; i < Size; i++)
+        {
+            if (pVector[i] == v.pVector[i])
+                f = 1;
+            else
+            {
+                f = 0;
+                break;
+            }
+        }
+        return f;
+    }
+    else return 0;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // сравнение
 bool TVector<ValType>::operator!=(const TVector &v) const
 {
+    bool f = 1;
+    if (Size == v.Size && StartIndex == v.StartIndex)
+    {
+        for (int i = 0; i < Size; i++)
+        {
+            if (pVector[i] == v.pVector[i])
+                f = 0;
+            else
+            {
+                f = 1;
+                break;
+            }
+        }
+        return f;
+    }
+    else return 1;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // присваивание
 TVector<ValType>& TVector<ValType>::operator=(const TVector &v)
 {
+    if (Size != v.Size)
+    {
+        delete[]pVector;
+        pVector = new ValType[v.Size];
+        Size = v.Size;
+    }
+    StartIndex = v.StartIndex;
+    for (int i = 0; i < Size; i++)
+        pVector[i] = v.pVector[i];
+    return *this;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // прибавить скаляр
 TVector<ValType> TVector<ValType>::operator+(const ValType &val)
 {
+    TVector temp(Size, StartIndex);
+    for (int i = 0; i < Size; i++)
+        temp.pVector[i] = pVector[i] + val;
+    return temp;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // вычесть скаляр
 TVector<ValType> TVector<ValType>::operator-(const ValType &val)
 {
+    TVector temp(Size, StartIndex);
+    for (int i = 0; i < Size; i++)
+        temp.pVector[i] = pVector[i] - val;
+    return temp;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // умножить на скаляр
 TVector<ValType> TVector<ValType>::operator*(const ValType &val)
 {
+    TVector temp(Size, StartIndex);
+    for (int i = 0; i < Size; i++)
+        temp.pVector[i] = pVector[i] * val;
+    return *this;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // сложение
@@ -157,6 +234,13 @@ public:
 template <class ValType>
 TMatrix<ValType>::TMatrix(int s): TVector<TVector<ValType> >(s)
 {
+    int _size;
+    s = _size;
+    *pMatrix = new TVector<ValType>[s];
+    for (int i = size; i > 0; i--) {
+        TVector<ValType> bf(i, size - i);
+        pMatrix[size - i] = bf;           //в операторе присваивания присваевается стартовый индекс
+    }
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // конструктор копирования
