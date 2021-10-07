@@ -63,7 +63,8 @@ TEST(TVector, can_set_and_get_element)
 
 TEST(TVector, throws_when_set_element_with_negative_index)
 {
-  ADD_FAILURE();
+	
+	ASSERT_ANY_THROW(TVector<int> v(-10));
 }
 
 TEST(TVector, throws_when_set_element_with_too_large_index)
@@ -73,52 +74,94 @@ TEST(TVector, throws_when_set_element_with_too_large_index)
 
 TEST(TVector, can_assign_vector_to_itself)
 {
-  ADD_FAILURE();
+	TVector<int> a(4);
+	
+	ASSERT_NO_THROW(a = a);
 }
 
 TEST(TVector, can_assign_vectors_of_equal_size)
 {
-  ADD_FAILURE();
+	TVector<int> a(4);
+	TVector<int> b(4);
+	a = b;
+	EXPECT_EQ(a, b);
 }
 
 TEST(TVector, assign_operator_change_vector_size)
 {
-  ADD_FAILURE();
+	//оператор присваивания изменяет размер вектора 
+	TVector<int> a(4);
+	TVector<int> b(2);
+	a = b;
+	EXPECT_EQ(a, b);
 }
 
 TEST(TVector, can_assign_vectors_of_different_size)
 {
-  ADD_FAILURE();
+	//могу prisvoit  векторы разных размеров
+	TVector<int> a(4);
+	TVector<int> b(2);
+	
+	ASSERT_NO_THROW(a = b);
 }
 
 TEST(TVector, compare_equal_vectors_return_true)
 {
-  ADD_FAILURE();
+	TVector<int> a(4);
+	TVector<int> b(4);
+
+	EXPECT_EQ (a,b);
 }
 
 TEST(TVector, compare_vector_with_itself_return_true)
 {
-  ADD_FAILURE();
+	TVector<int> a(4);
+	EXPECT_EQ(a, a);
+
 }
 
 TEST(TVector, vectors_with_different_size_are_not_equal)
 {
-  ADD_FAILURE();
+	TVector<int> a(3);
+	TVector<int> b(4);
+	EXPECT_NE(a, b);
+ 
 }
 
 TEST(TVector, can_add_scalar_to_vector)
 {
-  ADD_FAILURE();
+	TVector<int> a(4);
+	TVector<int> b(4);
+	for (int i = 0; i < 4; i++)
+		a[i] = 2;
+	a = a + 3;
+	for (int i = 0; i < 4; i++)
+		b[i] = 5;
+	EXPECT_EQ(a, b);
 }
 
 TEST(TVector, can_subtract_scalar_from_vector)
 {
-  ADD_FAILURE();
+	TVector<int> a(4);
+	TVector<int> b(4);
+	for (int i = 0; i < 4; i++)
+		a[i] = 5;
+	a = a - 3;
+	for (int i = 0; i < 4; i++)
+		b[i] = 2;
+	EXPECT_EQ(a, b);
 }
 
 TEST(TVector, can_multiply_scalar_by_vector)
 {
-  ADD_FAILURE();
+	TVector<int> a(4);
+	TVector<int> b(4);
+	for (int i = 0; i < 4; i++)
+		a[i] = 2;
+	a = a * 3;
+	for (int i = 0; i < 4; i++)
+		b[i] = 6;
+	EXPECT_EQ(a, b);
 }
 
 TEST(TVector, can_add_vectors_with_equal_size)

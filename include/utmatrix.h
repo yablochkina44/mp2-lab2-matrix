@@ -234,13 +234,13 @@ public:
 template <class ValType>
 TMatrix<ValType>::TMatrix(int s): TVector<TVector<ValType> >(s)
 {
-    int _size;
+  /*  int _size;
     s = _size;
     *pMatrix = new TVector<ValType>[s];
     for (int i = size; i > 0; i--) {
         TVector<ValType> bf(i, size - i);
-        pMatrix[size - i] = bf;           //в операторе присваивания присваевается стартовый индекс
-    }
+        pMatrix[size - i] = bf; */          //в операторе присваивания присваевается стартовый индекс
+    
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // конструктор копирования
