@@ -183,22 +183,50 @@ TVector<ValType> TVector<ValType>::operator*(const ValType &val)
     TVector temp(Size, StartIndex);
     for (int i = 0; i < Size; i++)
         temp.pVector[i] = pVector[i] * val;
-    return *this;
+    return temp;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // сложение
 TVector<ValType> TVector<ValType>::operator+(const TVector<ValType> &v)
 {
+    if (Size == v.Size)
+    {
+        TVector tmp(Size);
+        for (int i = 0; i < Size; i++)
+        {
+            tmp.pVector[i] = pVector[i] + v.pVector[i];
+        }
+        return tmp;
+    }
+    else throw "Vectors have different lengths";
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // вычитание
 TVector<ValType> TVector<ValType>::operator-(const TVector<ValType> &v)
 {
+    if (Size == v.Size)
+    {
+        TVector tmp(Size);
+        for (int i = 0; i < Size; i++)
+        {
+            tmp.pVector[i] = pVector[i] - v.pVector[i];
+        }
+        return tmp;
+    }
+    else throw "Vectors have different lengths";
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // скалярное произведение
 ValType TVector<ValType>::operator*(const TVector<ValType> &v)
 {
+    if (Size == v.Size)
+    {
+        ValType res = 0;
+        for (int i = 0; i < Size; i++)
+            res = res + pVector[i] * v.pVector[i];
+        return res;
+    }
+    else throw "Vectors have different lengths";
 } /*-------------------------------------------------------------------------*/
 
 
@@ -254,26 +282,75 @@ TMatrix<ValType>::TMatrix(const TVector<TVector<ValType> > &mt):
 template <class ValType> // сравнение
 bool TMatrix<ValType>::operator==(const TMatrix<ValType> &mt) const
 {
+    if (Size != mt.Size)
+        return false;
+    if (Size == mt.Size && StartIndex == mt.StartIndex)
+    {
+        for (int i = 0; i < Size; i++)
+        {
+            if (pVector[i] != mt.pVector[i])
+                return false;
+            else
+                return true;
+        }
+    }
+    else false;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // сравнение
 bool TMatrix<ValType>::operator!=(const TMatrix<ValType> &mt) const
 {
+    return !(*this == mt);
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // присваивание
 TMatrix<ValType>& TMatrix<ValType>::operator=(const TMatrix<ValType> &mt)
 {
+    if (mt.Size < 0)
+        throw mt.Size;
+    if (Size != mt.Size)
+    {
+        delete[]pVector;
+        pVector = new TVector<ValType>[mt.Size];
+        Size = mt.Size; 
+    }
+    for (int i = 0; i < Size; i++)
+    {
+        pVector[i] = mt.pVector[i];
+    }
+    return *this;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // сложение
 TMatrix<ValType> TMatrix<ValType>::operator+(const TMatrix<ValType> &mt)
 {
+    if (Size != mt.Size)
+        throw "Not equal size";
+    else if (StartIndex != mt.StartIndex)
+        throw "Not equal start index";
+    else
+    {
+        TMatrix <ValType> res(Size);
+        for (int i = StartIndex; i < Size + StartIndex; i++)
+            res.pVector[i] = pVector[i] + mt.pVector[i];
+        return res;
+    }
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // вычитание
 TMatrix<ValType> TMatrix<ValType>::operator-(const TMatrix<ValType> &mt)
 {
+    if (Size != mt.Size)
+        throw "Not equal size";
+    else if (StartIndex != mt.StartIndex)
+        throw "Not equal start index";
+    else
+    {
+        TMatrix <ValType> res(Size);
+        for (int i = StartIndex; i < Size + StartIndex; i++)
+            res.pVector[i] = pVector[i] + mt.pVector[i];
+        return res;
+    }
 } /*-------------------------------------------------------------------------*/
 
 // TVector О3 Л2 П4 С6
