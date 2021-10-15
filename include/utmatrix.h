@@ -260,15 +260,19 @@ public:
 };
 
 template <class ValType>
-TMatrix<ValType>::TMatrix(int s): TVector<TVector<ValType> >(s)
+TMatrix<ValType>::TMatrix(int s) : TVector<TVector<ValType> >(s)
 {
-  /*  int _size;
-    s = _size;
-    *pMatrix = new TVector<ValType>[s];
-    for (int i = size; i > 0; i--) {
-        TVector<ValType> bf(i, size - i);
-        pMatrix[size - i] = bf; */          //в операторе присваивания присваевается стартовый индекс
-    
+    if ((s >= 0) && (s <= MAX_MATRIX_SIZE))
+    {
+        Size = s;
+        pVector = new TVector<ValType>[Size];
+        for (int i = 0; i < Size; i++)
+        {
+            TVector<ValType> tmp(Size - i, i);
+            pVector[i] = tmp;
+        }
+    }
+    else throw s;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // конструктор копирования
@@ -326,8 +330,8 @@ TMatrix<ValType> TMatrix<ValType>::operator+(const TMatrix<ValType> &mt)
 {
     if (Size != mt.Size)
         throw "Not equal size";
-    else if (StartIndex != mt.StartIndex)
-        throw "Not equal start index";
+   //else if (StartIndex != mt.StartIndex)
+   //     throw "Not equal start index";
     else
     {
         TMatrix <ValType> res(Size);
@@ -342,13 +346,12 @@ TMatrix<ValType> TMatrix<ValType>::operator-(const TMatrix<ValType> &mt)
 {
     if (Size != mt.Size)
         throw "Not equal size";
-    else if (StartIndex != mt.StartIndex)
-        throw "Not equal start index";
+  
     else
     {
         TMatrix <ValType> res(Size);
         for (int i = StartIndex; i < Size + StartIndex; i++)
-            res.pVector[i] = pVector[i] + mt.pVector[i];
+            res.pVector[i] = pVector[i] - mt.pVector[i];
         return res;
     }
 } /*-------------------------------------------------------------------------*/

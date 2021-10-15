@@ -194,17 +194,15 @@ TEST(TVector, can_multiply_scalar_by_vector)
 TEST(TVector, can_add_vectors_with_equal_size)
 {
 	//могу сложить вектора с одинаковым размером
-	TVector<int> a(3);
-	for (int i = 0; i < 3; i++)
-		a[i] = i;
-	TVector<int> b(3);
-	for (int i = 0; i < 3; i++)
-		b[i] = i + 1;
-	TVector<int> c(3);
-	c = a + b;
-	EXPECT_EQ(1, c[0]);
-	EXPECT_EQ(3, c[1]);
-	EXPECT_EQ(5, c[2]);
+	TVector <int> a(5), b(5), c(5);
+	for (int i = 0; i < 5; i++)
+	{
+		a[i] = 10;
+		b[i] = 5;
+		c[i] = 15;
+	}
+	a = a + b;
+	EXPECT_EQ(c, a);
 }
 
 TEST(TVector, cant_add_vectors_with_not_equal_size)
@@ -219,12 +217,12 @@ TEST(TVector, can_subtract_vectors_with_equal_size)
 	//могу вычесть вектора с одинаковым размером
 	TVector <int> a(5), b(5), c(5);
 	for (int i = 0; i < 5; i++)
+	{
 		a[i] = 10;
-	for (int i = 0; i < 5; i++)
 		b[i] = 5;
-	a = a - b;
-	for (int i = 0; i < 5; i++)
 		c[i] = 5;
+	}
+	a = a - b;
 	EXPECT_EQ(c, a);
 }
 
